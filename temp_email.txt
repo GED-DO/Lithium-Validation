@@ -1,0 +1,27 @@
+Hola Patricio,
+
+Te escribo para retomar el tema de la propuesta que nos enviaste. Estuvimos revisándola con el equipo y queremos ajustar el enfoque para optimizar tanto el alcance como la inversión.
+
+Entendemos que la cotización incluye evaluación completa más implementación de server-side tagging, pero nos gustaría explorar tres puntos específicos contigo.
+
+Primero, sobre la auditoría inicial. Sabemos que revisar cada evento toma tiempo considerable porque hay que probarlo manualmente, pero nos preguntamos si podemos trabajar con un scope más acotado. En lugar de revisar todos los eventos, nos enfocaríamos en los cinco críticos para construir un embudo robusto:
+
+• Login
+• View Product
+• Add To Cart
+• Check Out
+• Purchase
+
+Con estos eventos funcionando correctamente en Tag Manager, Google, Meta y TikTok, tendríamos una base sólida. ¿Sería posible ajustar las horas de la primera evaluación trabajando solo con estos eventos prioritarios?
+
+Segundo tema es la implementación. Veo que hay dos rutas posibles. Una es trabajar el contenedor de Google Tag Manager en Cloud con hosting de Google, que entiendo cuesta entre 5 y 15 dólares mensuales dependiendo del uso. La otra opción es usar una plataforma como Stape que maneja el server tracking por unos 20 a 50 dólares mensuales de por vida. Esta segunda opción simplifica mucho la programación del lado nuestro. ¿Podrías darnos tu recomendación técnica sobre cuál ruta te parece más eficiente para nuestro caso específico?
+
+Tercero, necesitamos entender mejor la división de trabajo. Entiendo que tú proporcionas las guías técnicas y nosotros las implementamos con nuestro equipo de desarrollo interno. Queremos asegurarnos de que el scope esté bien definido para coordinar todo correctamente.
+
+La idea es que podamos arrancar con una inversión más ajustada, enfocándonos en lo esencial primero. Si podemos bajar la propuesta inicial trabajando con el scope reducido, podemos evaluar expandir después según los resultados.
+
+¿Podrías revisar estos puntos y mandarnos una cotización ajustada? Cualquier duda que tengas sobre el setup actual o los eventos que manejamos, podemos coordinar una llamada rápida.
+
+Quedo pendiente de tus comentarios.
+
+Saludos
