@@ -1,0 +1,69 @@
+{
+  "validation_settings": {
+    "singleton_threshold": 0.2,
+    "minimum_sources": 2,
+    "passing_score": 0.7,
+    "confidence_weights": {
+      "HIGH": 1.0,
+      "MEDIUM": 0.75,
+      "LOW": 0.5,
+      "UNCERTAIN": 0.0
+    }
+  },
+  
+  "bias_detection": {
+    "check_confirmation_bias": true,
+    "check_recency_bias": true,
+    "check_geographic_bias": true,
+    "check_source_bias": true
+  },
+  
+  "report_settings": {
+    "default_format": "markdown",
+    "include_recommendations": true,
+    "max_recommendations": 5,
+    "include_examples": false
+  },
+  
+  "domain_specific_rules": {
+    "consulting": {
+      "require_mece": true,
+      "require_hypothesis": true,
+      "min_confidence_for_recommendations": 0.75
+    },
+    "technical": {
+      "require_citations": true,
+      "computational_hardness_check": true,
+      "version_checking": true
+    },
+    "research": {
+      "singleton_threshold": 0.1,
+      "minimum_sources": 3,
+      "require_methodology": true
+    }
+  },
+  
+  "abstention_phrases": [
+    "uncertain",
+    "cannot determine",
+    "insufficient data",
+    "requires further",
+    "unable to verify",
+    "beyond current scope",
+    "limited evidence",
+    "preliminary assessment",
+    "subject to revision",
+    "confidence interval"
+  ],
+  
+  "high_confidence_indicators": [
+    "data shows",
+    "evidence confirms",
+    "consistently demonstrated",
+    "validated by",
+    "empirically proven",
+    "statistically significant",
+    "peer-reviewed",
+    "replicated findings"
+  ]
+}

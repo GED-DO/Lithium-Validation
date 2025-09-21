@@ -1,0 +1,28 @@
+{
+  "auto_validation": {
+    "enabled_by_default": true,
+    "mode": "smart",
+    "settings": {
+      "min_content_length": 100,
+      "auto_detect_sources": true,
+      "auto_detect_domain": true,
+      "auto_adjust_strictness": true,
+      "silent_mode": false
+    },
+    "thresholds": {
+      "auto_approve": 80,
+      "needs_review": 60,
+      "needs_revision": 40
+    },
+    "user_preferences": {
+      "show_detailed_report": false,
+      "show_confidence_scores": true,
+      "highlight_issues": true,
+      "auto_fix_suggestions": true
+    }
+  },
+  "simple_toggle": {
+    "master_switch": true,
+    "validation_level": "auto"
+  }
+}

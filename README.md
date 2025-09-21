@@ -1,253 +1,208 @@
-# Output Validation System
+<div align="center">
+  <h1>🔬 Lithium-Validation</h1>
+  <p><strong>Stabilizing AI outputs through systematic validation</strong></p>
+  <p><em>Created by Guillermo Espinosa</em></p>
+  
+  <p>
+    <a href="https://github.com/GED-DO/Lithium-Validation/actions"><img src="https://github.com/GED-DO/Lithium-Validation/workflows/tests/badge.svg" alt="Tests"></a>
+    <a href="https://pypi.org/project/Lithium-Validation/"><img src="https://img.shields.io/pypi/v/Lithium-Validation.svg" alt="PyPI"></a>
+    <a href="https://github.com/GED-DO/Lithium-Validation/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
+    <a href="https://github.com/GED-DO/Lithium-Validation/stargazers"><img src="https://img.shields.io/github/stars/GED-DO/Lithium-Validation.svg" alt="Stars"></a>
+  </p>
+</div>
 
-A comprehensive validation framework for checking output quality and hallucination risk, based on insights from "Why Language Models Hallucinate" (Kalai et al., 2025).
+---
 
-## Overview
+## What Is It?
 
-This validation system implements a three-stage process to evaluate outputs for:
-- **Hallucination risk** - Identifying unsupported or singleton claims
-- **Confidence distribution** - Assessing the balance of certain vs uncertain statements
-- **Quality issues** - Detecting biases, ambiguities, and structural problems
+**Lithium-Validation** is a Python-based validation engine based on the paper ["Why Language Models Hallucinate"](https://arxiv.org/abs/2509.04664) by Adam Tauman Kalai, Ofir Nachum, Santosh S. Vempala, and Edwin Zhang.
 
-## Quick Start
+Building explicit uncertainty acknowledgment into your frameworks isn't a weakness - **it's a mathematical requirement** for reliable outputs. The paper proves that without this, even the most sophisticated systems will hallucinate at predictable rates.
 
-### Basic Command Line Usage
+> Just as lithium stabilizes mood swings in psychiatry, the Lithium-Validation framework stabilizes AI outputs by detecting overconfident claims and identifying unsupported statements.
+
+## 🎯 The Three-Stage Validation Process
+
+### 1. **Pre-Validation Stage** (Using Context Model Protocol)
+- Classify insight type (empirical/inferential/hypothetical)
+- Identify singleton vs. validated insights
+- Set explicit confidence thresholds
+
+### 2. **Output Generation**
+- Tag each claim with confidence level
+- Include "abstention value" - what the client gains from knowing what you don't know
+- Build in cross-validation from multiple sources
+
+### 3. **Quality Assurance**
+- Apply the 2:1 rule from the paper - ensure validated insights outweigh unvalidated ones 2:1
+- Check for "computational hardness" - are you claiming insights that would require impossible analysis?
+- Verify scope boundaries are explicit
+
+## ✨ What Makes It Valuable
+
+It translates **academic research** into **practical checks**:
+- Pattern recognition for claim types
+- Statistical analysis of support ratios
+- Rule-based bias detection
+- Mathematical scoring based on the paper's proofs
+- ✅ No external dependencies or APIs
+- ✅ Based on published academic research
+- ✅ Not a model, but a framework
+
+Think of it like a **sophisticated checklist system** that:
+- Counts and categorizes claims
+- Checks against sources
+- Calculates ratios and scores
+- Applies the paper's mathematical insights
+
+It's similar to grammar checkers or linting tools - algorithmic validation based on rules, not a trained AI model.
+
+## 🚀 Quick Start
+
+### Installation
 
 ```bash
-# Quick validate text
-python validate.py --text "Your output text here"
+# Via pip
+pip install Lithium-Validation
 
-# Validate a file
-python validate.py --file report.txt
-
-# Validate with source checking
-python validate.py --file output.txt --sources source1.txt source2.txt
-
-# Generate detailed report
-python validate.py --file output.txt --report markdown --verbose
+# Via GitHub
+git clone https://github.com/GED-DO/Lithium-Validation
+cd Lithium-Validation
+pip install -e .
 ```
 
-### Python Usage
+### Basic Usage
+
+Just ask something like:
+- "Validate this output: [your text]"
+- "Check this for hallucination risk: [your text]"
+- "Run validation on my last response"
 
 ```python
-from validation_interface import quick_check, validate_with_sources
+from lithium_validation import quick_check, ValidationInterface
 
 # Quick validation
-result = quick_check("Your output text")
+result = quick_check("Your AI-generated text here")
 print(f"Score: {result['score']}%, Risk: {result['risk']}")
 
-# Validation with sources
-sources = ["Source text 1", "Source text 2"]
-result = validate_with_sources("Your output", sources)
+# You'll get:
+# - Overall score (0-100%)
+# - Hallucination risk (LOW/MEDIUM/HIGH)
+# - Key issues found
+# - Specific recommendations
+
+# Full validation with sources
+lithium = ValidationInterface()
+result = lithium.full_validate(
+    content="Your text",
+    sources=["Source 1", "Source 2"],
+    domain="consulting"
+)
 ```
 
-## Three-Stage Validation Process
-
-### Stage 1: Pre-Validation Check
-- **Claim Classification**: Categorizes claims as empirical, inferential, hypothetical, or arbitrary
-- **Ambiguity Detection**: Identifies vague or uncertain language
-- **Scope Verification**: Ensures boundaries and constraints are defined
-- **Singleton Identification**: Finds claims that appear only once in sources
-
-### Stage 2: Output Generation Assessment
-- **Confidence Distribution**: Maps claims to confidence levels (High/Medium/Low/Uncertain)
-- **Support Analysis**: Checks if claims are backed by sources
-- **Cross-Validation**: Identifies which claims appear in multiple sources
-- **Computational Hardness**: Flags computationally intractable claims
-
-### Stage 3: Quality Assurance
-- **Singleton Rate Calculation**: Measures percentage of unsupported unique claims
-- **Validation Ratio**: Ensures 2:1 ratio of validated to unvalidated claims
-- **Bias Detection**: Checks for confirmation, recency, and geographic biases
-- **Hallucination Risk Score**: Calculates overall risk based on paper's formulas
-
-## Key Metrics
-
-### Singleton Rate (sr)
-The fraction of claims that appear only once or have no cross-validation. Based on the paper's finding that hallucination rate ≥ singleton rate.
-
-**Threshold**: < 20% for passing
-
-### Validation Ratio
-The ratio of supported to unsupported claims. The paper suggests a 2:1 minimum ratio.
-
-**Threshold**: ≥ 2.0 for passing
-
-### Confidence-Weighted Score
-Weighted average of claim confidence levels:
-- High confidence (t=0.9): Weight 1.0
-- Medium confidence (t=0.75): Weight 0.75  
-- Low confidence (t=0.5): Weight 0.5
-- Uncertain: Weight 0.0
-
-### Overall Score
-Composite score combining:
-- Pre-validation (30%)
-- Generation assessment (40%)
-- Quality assurance (30%)
-
-**Passing threshold**: ≥ 70%
-
-## Configuration
-
-Edit `config.json` to customize:
-- Validation thresholds
-- Confidence weights
-- Domain-specific rules
-- Bias detection settings
-- Abstention phrases
-
-### Domain-Specific Rules
-
-```json
-"consulting": {
-  "require_mece": true,
-  "require_hypothesis": true,
-  "min_confidence_for_recommendations": 0.75
-}
-```
-
-## Validation Flags
-
-The system generates flags for issues found:
-
-- `HIGH_SINGLETON_RATE`: Too many unsupported unique claims
-- `POOR_VALIDATION_RATIO`: Insufficient cross-validated claims
-- `UNSUPPORTED_CLAIMS`: Claims without source backing
-- `COMPUTATIONAL_INTRACTABILITY`: Claims requiring impossible computation
-- `UNDEFINED_SCOPE`: Missing boundaries or constraints
-- `HIGH_AMBIGUITY`: Excessive uncertain language
-- `MISSING_UNCERTAINTY_ACKNOWLEDGMENT`: No abstentions despite low confidence
-- `CONFIRMATION_BIAS`: One-sided or absolute claims
-- `RECENCY_BIAS`: Overemphasis on newest information
-- `GEOGRAPHIC_BIAS`: Regional perspective imbalance
-
-## Report Formats
-
-### Markdown Report
-Comprehensive report with:
-- Overall score and status
-- Confidence distribution breakdown
-- Key metrics visualization
-- Issues and recommendations
-- Detailed analysis
-
-### JSON Report
-Structured data for programmatic use:
-```json
-{
-  "overall_score": 0.75,
-  "passed": true,
-  "hallucination_risk": "LOW",
-  "singleton_rate": 0.15,
-  "validation_flags": ["FLAG1", "FLAG2"],
-  "recommendations": ["..."]
-}
-```
-
-### Text Report
-Simple plain text summary for quick review
-
-## Integration Examples
-
-### Pre-Commit Hook
+### Command Line
 
 ```bash
-#!/bin/bash
-# .git/hooks/pre-commit
-for file in $(git diff --cached --name-only --diff-filter=ACM | grep ".txt\|.md"); do
-  python validation_system/validate.py --file "$file" --threshold 0.7
-  if [ $? -ne 0 ]; then
-    echo "Validation failed for $file"
-    exit 1
-  fi
-done
+# Quick check
+lithium-validate --text "Your output text"
+
+# With sources
+lithium-validate --file output.txt --sources source1.txt source2.txt
+
+# Generate report
+lithium-report --file output.txt --format markdown
 ```
 
-### CI/CD Pipeline
+## 🤖 Claude Desktop Integration
 
-```yaml
-# .github/workflows/validate.yml
-- name: Validate Output Quality
-  run: |
-    python validation_system/validate.py \
-      --file output.txt \
-      --sources data/*.txt \
-      --report markdown \
-      --output validation_report.md
+Add Lithium-Validation to your Claude Desktop for real-time validation:
+
+```bash
+# Install MCP server
+lithium-validate install-mcp
+
+# Add to Claude configuration
+lithium-validate configure-claude
 ```
 
-### Python Integration
+Then in Claude:
+- "Use Lithium to validate this text"
+- "Check stability with Lithium"
+- "Lithium risk assessment for: [text]"
 
-```python
-from validation_interface import ValidationInterface
+[Full MCP Setup Guide](./docs/MCP_SETUP.md)
 
-class ConsultingReport:
-    def __init__(self):
-        self.validator = ValidationInterface()
-    
-    def generate_section(self, content, sources):
-        # Generate content
-        result = self.validator.full_validate(content, sources)
-        
-        if not result.passed:
-            # Apply recommendations
-            for rec in result.recommendations:
-                content = self.apply_recommendation(content, rec)
-            
-            # Re-validate
-            result = self.validator.full_validate(content, sources)
-        
-        return content, result
-```
+## 📊 Validation Metrics
 
-## Theory Behind the System
+| Metric | Target | Description |
+|--------|--------|-------------|
+| Stability Score | ≥80% | Overall output quality |
+| Hallucination Risk | <20% | Risk of unsupported claims |
+| Singleton Rate | <20% | Claims without cross-validation |
+| Validation Ratio | ≥2:1 | Supported vs unsupported claims |
 
-Based on the paper's key findings:
+## 🏢 Specific Methodology for Consulting (McKinsey/BCG/Bain)
 
-1. **Error Lower Bound**: `err ≥ 2·erriiv - |Vc|/|Ec| - δ`
-   - Generation errors are at least twice the classification error rate
-   - Implemented through validation ratio checking
+Given the preference for top-tier consulting methodologies, Lithium integrates these findings into:
 
-2. **Singleton Rate Correlation**: Hallucination rate ≥ fraction of singleton facts
-   - Tracked through singleton detection and cross-validation
+### **Enhanced Hypothesis-Driven Approach:**
+- Start with confidence-weighted hypotheses
+- Build explicit "unknown tracking" into MECE trees
+- Create "validation debt" metrics for each branch of analysis
 
-3. **Confidence Thresholds**: Explicit confidence targets reduce hallucinations
-   - Implemented via confidence level classification
+### **Modified Issue Trees:**
+- Add confidence scores to each branch
+- Identify which branches have "singleton support" (only one data point)
+- Build parallel validation paths for critical decisions
 
-4. **Binary Grading Problem**: Most evaluations penalize uncertainty
-   - Addressed by rewarding appropriate abstentions
+This framework provides mathematical proof for why Context Model Protocol approaches are correct - it's not just good practice, it's **statistically necessary** to avoid systematic errors in complex analytical work.
 
-## Best Practices
+## 🔍 What Lithium Checks For
 
-1. **Always provide sources** for cross-validation
-2. **Set appropriate domain** for context-specific rules
-3. **Review recommendations** and iterate on content
-4. **Track validation history** to identify patterns
-5. **Adjust thresholds** based on use case requirements
+When you request validation, Lithium evaluates:
+1. **Singleton claims** (facts appearing only once)
+2. **Confidence distribution** (balance of certain vs uncertain)
+3. **Support ratio** (validated vs unvalidated claims)
+4. **Biases** (confirmation, recency, geographic)
+5. **Computational impossibilities**
+6. **Appropriate uncertainty acknowledgment**
 
-## Troubleshooting
+## 📖 Documentation
 
-### High Singleton Rate
-- Add more sources for cross-validation
-- Remove unsupported speculative claims
-- Increase citation density
+- [Installation Guide](docs/installation.md)
+- [Quick Start Tutorial](docs/quickstart.md)
+- [API Reference](docs/api_reference.md)
+- [MCP Integration](docs/MCP_SETUP.md)
+- [Theoretical Foundation](docs/theory.md)
 
-### Poor Validation Ratio
-- Strengthen evidence for key claims
-- Remove or qualify weak assertions
-- Add explicit uncertainty acknowledgments
+## 🤝 Contributing
 
-### High Hallucination Risk
-- Reduce arbitrary fact claims
-- Increase empirical support
-- Add confidence qualifiers
+We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-## References
+## 📝 License
 
-Kalai, A.T., Vempala, S.S. et al. (2025). "Why Language Models Hallucinate." 
-arXiv:2509.04664v1
+MIT License - see [LICENSE](LICENSE) for details.
 
-## License
+## 🔬 Academic Foundation
 
-MIT License - Use and modify freely for your validation needs.
+Based on:
+> Kalai, A.T., Nachum, O., Vempala, S.S., Zhang, E. (2025). "Why Language Models Hallucinate." arXiv:2509.04664v1
+
+## 👨‍💻 Author
+
+**Guillermo Espinosa**
+- GitHub: [@GED-DO](https://github.com/GED-DO)
+- Email: hola@ged.do
+- LinkedIn: [Guillermo Espinosa](https://www.linkedin.com/in/guillermo-espinosa/)
+
+## 🙏 Acknowledgments
+
+- Adam Tauman Kalai, Ofir Nachum, Santosh S. Vempala, and Edwin Zhang for the foundational research
+- Anthropic MCP Team for the Model Context Protocol
+- Open source community contributors
+
+---
+
+<div align="center">
+  <strong>Lithium-Validation: Stabilizing your AI, one validation at a time.</strong>
+</div>
