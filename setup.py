@@ -5,16 +5,16 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="Lithium-Validation",
-    version="1.0.0",
+    version="2.0.0",  # Updated for automatic validation
     author="Guillermo Espinosa",
     author_email="hola@ged.do",
-    description="A validation framework for detecting and preventing hallucinations in AI-generated content",
+    description="Automatic AI output validation with zero configuration - detects content type and validates intelligently",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/GED-DO/Lithium-Validation",
     packages=find_packages(),
     classifiers=[
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",  # Updated from Beta
         "Intended Audience :: Developers",
         "Intended Audience :: Science/Research",
         "Intended Audience :: Information Technology",
@@ -51,16 +51,20 @@ setup(
         "console_scripts": [
             "lithium-validate=lithium_validation.cli.validate:main",
             "lithium-report=lithium_validation.cli.validate:report",
+            "lithium-auto=lithium_validation.cli.auto:main",  # New auto CLI
         ],
     },
     include_package_data=True,
     package_data={
-        "lithium_validation": ["config/*.json"],
+        "lithium_validation": [
+            "config/*.json",
+            "mcp/*.py",
+        ],
     },
-    keywords="ai validation llm hallucination detection claude anthropic mcp consulting framework McKinsey BCG Bain",
+    keywords="ai validation llm hallucination detection automatic zero-config claude anthropic mcp consulting framework McKinsey BCG Bain",
     project_urls={
         "Bug Reports": "https://github.com/GED-DO/Lithium-Validation/issues",
         "Source": "https://github.com/GED-DO/Lithium-Validation",
-        "Documentation": "https://lithium-validation.readthedocs.io",
+        "Documentation": "https://github.com/GED-DO/Lithium-Validation/blob/main/README.md",
     },
 )
